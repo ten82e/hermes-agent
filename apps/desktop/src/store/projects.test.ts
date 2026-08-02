@@ -564,7 +564,9 @@ describe('followActiveSessionCwd', () => {
 
   const deferredGateway = () => {
     let resolve!: (value: unknown) => void
-    const promise = new Promise(r => { resolve = r })
+    const promise = new Promise(r => {
+      resolve = r
+    })
     const gateway = { connectionState: 'open', request: vi.fn().mockReturnValue(promise) }
 
     activeGateway.mockImplementation(() => gateway as never)
@@ -598,10 +600,12 @@ describe('followActiveSessionCwd', () => {
   it('resolves a nested repository to the inner project after refresh', async () => {
     $projectTree.set([treeNode({ id: 'p_outer', label: 'Outer', path: '/repos/outer' })])
     $currentCwd.set('/repos/outer/nested')
-    openGatewayReturning(payload([
-      treeNode({ id: 'p_outer', label: 'Outer', path: '/repos/outer' }),
-      treeNode({ id: 'p_nested', label: 'Nested', path: '/repos/outer/nested' })
-    ]))
+    openGatewayReturning(
+      payload([
+        treeNode({ id: 'p_outer', label: 'Outer', path: '/repos/outer' }),
+        treeNode({ id: 'p_nested', label: 'Nested', path: '/repos/outer/nested' })
+      ])
+    )
 
     await followActiveSessionCwd('/repos/outer/nested')
 
